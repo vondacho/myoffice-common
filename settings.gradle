@@ -1,0 +1,3 @@
+rootProject.name = 'myoffice-common'
+include 'myoffice-common-domain', 'myoffice-common-rest', 'myoffice-common-testing'
+

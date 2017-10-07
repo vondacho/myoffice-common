@@ -1,0 +1,5 @@
+dependencies {
+    compile 'edu.noia.myoffice:myoffice-common-domain:0.0.1'
+    compile 'org.springframework.boot:spring-boot-starter-hateoas'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+}
