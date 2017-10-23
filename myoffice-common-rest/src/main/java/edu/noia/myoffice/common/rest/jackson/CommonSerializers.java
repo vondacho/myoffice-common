@@ -14,9 +14,29 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.UUID;
 
 @JsonComponent
 public class CommonSerializers {
+
+    public static class UUIDSerializer extends JsonSerializer<UUID> {
+        @Override
+        public void serialize(UUID uuid, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            if (uuid != null) {
+                gen.writeString(uuid.toString());
+            }
+        }
+    }
+
+    public static class UUIDDeserializer extends JsonDeserializer<UUID> {
+        @Override
+        public UUID deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+            return Optional.ofNullable(p.readValueAs(String.class))
+                    .filter(StringUtils::hasText)
+                    .map(UUID::fromString)
+                    .orElse(null);
+        }
+    }
 
     public static class LocalDateSerializer extends JsonSerializer<LocalDate> {
         @Override
@@ -31,7 +51,9 @@ public class CommonSerializers {
         @Override
         public LocalDate deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
             return Optional.ofNullable(p.readValueAs(String.class))
-                    .map(s -> StringUtils.hasText(s) ? LocalDate.parse(s, DateTimeFormatter.ISO_DATE) : null).orElse(null);
+                    .filter(StringUtils::hasText)
+                    .map(s -> LocalDate.parse(s, DateTimeFormatter.ISO_DATE))
+                    .orElse(null);
         }
     }
 
@@ -48,7 +70,9 @@ public class CommonSerializers {
         @Override
         public LocalDateTime deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
             return Optional.ofNullable(p.readValueAs(String.class))
-                    .map(s -> StringUtils.hasText(s) ? LocalDateTime.parse(s, DateTimeFormatter.ISO_DATE_TIME) : null).orElse(null);
+                    .filter(StringUtils::hasText)
+                    .map(s -> LocalDateTime.parse(s, DateTimeFormatter.ISO_DATE_TIME))
+                    .orElse(null);
         }
     }
 }

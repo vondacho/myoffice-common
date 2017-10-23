@@ -1,13 +1,12 @@
 allprojects {
     apply plugin: 'java'
     group 'edu.noia.myoffice'
-    version = '0.0.2'
+    version = '0.0.3'
     repositories {
         jcenter()
         mavenLocal()
         maven {
             url myMavenRepoReadUrl
-
             credentials {
                 username myMavenRepoReadUsername
                 password myMavenRepoReadPassword
@@ -55,6 +54,7 @@ subprojects {
     }
     publishing {
         repositories {
+            mavenLocal()
             maven {
                 url myMavenRepoWriteUrl
                 credentials {
