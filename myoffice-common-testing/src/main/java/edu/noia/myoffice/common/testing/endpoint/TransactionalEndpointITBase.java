@@ -1,19 +1,18 @@
-package edu.noia.myoffice.common.testing;
+package edu.noia.myoffice.common.testing.endpoint;
 
-import org.junit.Before;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * Base class for testing Spring MVC controllers using Spring CDC generated tests.
- * To be used if the Pact test suite requires data from a relational database as fixture.
+ * Base class for testing Spring MVC controllers.
+ * To be used if the controller accesses data from a relational database.
  * Any (database) modifying REST method call will be rolled back, so that after the test,
  * the database will be in the same state as before the test.
  */
 @Transactional
-public abstract class EndpointPactITWithFixture extends EndpointPactITBase {
+public abstract class TransactionalEndpointITBase extends EndpointITBase {
 
     @PersistenceContext
     private EntityManager em;
@@ -25,21 +24,7 @@ public abstract class EndpointPactITWithFixture extends EndpointPactITBase {
      * retrieved with a query hitting the database.
      */
     protected void flushClear() {
-        this.em.flush();
-        this.em.clear();
+        em.flush();
+        em.clear();
     }
-
-    @Before
-    @Override
-    public void setup() {
-        super.setup();
-        setupFixture();
-    }
-
-    /**
-     * Template method to be implemented by subclasses.
-     * It usually calls the entity manager bean and the flushClear method for persisting entities into the relational
-     * database. This setup is executed before each Pact test.
-     */
-    public abstract void setupFixture();
 }

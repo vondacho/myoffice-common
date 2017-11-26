@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.util.StringUtils;
 
@@ -16,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonComponent
 public class CommonSerializers {
 

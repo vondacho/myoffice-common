@@ -1,6 +1,7 @@
 package edu.noia.myoffice.common.testing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.noia.myoffice.common.testing.endpoint.EndpointITBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

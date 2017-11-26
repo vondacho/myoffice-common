@@ -13,7 +13,7 @@ public class SpecificationBuilder<E> {
 
     public SpecificationBuilder with(SearchCriteria criteria) {
         Optional<Specification<E>> specification = criteria.toSpecification();
-        specification.ifPresent(s -> params.add(s));
+        specification.ifPresent(params::add);
         return this;
     }
 

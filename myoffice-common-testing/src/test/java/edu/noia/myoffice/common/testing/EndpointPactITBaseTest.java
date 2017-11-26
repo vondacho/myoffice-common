@@ -1,6 +1,7 @@
 package edu.noia.myoffice.common.testing;
 
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
+import edu.noia.myoffice.common.testing.endpoint.EndpointPactITBase;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

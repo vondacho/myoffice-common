@@ -13,6 +13,7 @@ public class IdentifiantPropertyEditorSupport<I> extends PropertyEditorSupport {
     @NonNull
     private Function<String, I> textToIdentifiant;
 
+    @Override
     public void setAsText(String text) {
         I identifiant = Optional.ofNullable(text)
                 .map(this.textToIdentifiant)

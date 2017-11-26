@@ -1,5 +1,6 @@
 package edu.noia.myoffice.common.testing;
 
+import edu.noia.myoffice.common.testing.endpoint.TransactionalEndpointITBase;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
