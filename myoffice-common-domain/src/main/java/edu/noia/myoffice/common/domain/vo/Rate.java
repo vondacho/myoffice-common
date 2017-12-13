@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Rate<Q extends Quantity, V extends Quantity> {
+public class Rate<Q extends Quantity, V extends Quantity> {
     @NonNull
     V value;
     @NonNull

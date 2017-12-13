@@ -38,7 +38,7 @@ public abstract class BaseEntity<
     @Override
     public E modify(S modifier) {
         modifier = validate(modifier);
-        return setState((S)toMutable(state).modify(modifier));
+        return setState((S)toMutable().modify(modifier));
     }
 
     @Override
@@ -49,6 +49,10 @@ public abstract class BaseEntity<
     @Override
     public E save(R repository) {
         return (E)repository.save(id, state);
+    }
+
+    protected M toMutable() {
+        return toMutable(state);
     }
 
     protected M toMutable(S state) {
