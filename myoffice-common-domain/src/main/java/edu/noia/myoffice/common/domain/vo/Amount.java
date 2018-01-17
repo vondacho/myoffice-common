@@ -33,6 +33,10 @@ public class Amount extends Quantity {
         return new Amount(new BigDecimal(value).movePointRight(2));
     }
 
+    public Amount negate() {
+        return new Amount(value.negate());
+    }
+
     public Long toCentimes() {
         return toLong();
     }

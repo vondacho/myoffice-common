@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import edu.noia.myoffice.common.domain.vo.Amount;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.jackson.JsonComponent;
@@ -13,7 +14,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
@@ -60,21 +60,21 @@ public class CommonSerializers {
         }
     }
 
-    public static class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
+    public static class AmountSerializer extends JsonSerializer<Amount> {
         @Override
-        public void serialize(LocalDateTime localDate, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            if (localDate != null) {
-                gen.writeString(localDate.format(DateTimeFormatter.ISO_DATE_TIME));
+        public void serialize(Amount amount, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            if (amount != null) {
+                gen.writeString(amount.asFrancs());
             }
         }
     }
 
-    public static class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
+    public static class AmountDeserializer extends JsonDeserializer<Amount> {
         @Override
-        public LocalDateTime deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+        public Amount deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
             return Optional.ofNullable(p.readValueAs(String.class))
                     .filter(StringUtils::hasText)
-                    .map(s -> LocalDateTime.parse(s, DateTimeFormatter.ISO_DATE_TIME))
+                    .map(Amount::ofFrancs)
                     .orElse(null);
         }
     }

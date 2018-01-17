@@ -1,5 +1,6 @@
 dependencies {
-    compile 'edu.noia.myoffice:myoffice-common-domain:0.0.1'
+    compile("edu.noia.myoffice:myoffice-common-domain:${version}")
+    compile("edu.noia.myoffice:myoffice-common-data:${version}")
     compile 'org.springframework.boot:spring-boot-starter-hateoas'
     compile 'org.springframework.boot:spring-boot-starter-web'
 }
