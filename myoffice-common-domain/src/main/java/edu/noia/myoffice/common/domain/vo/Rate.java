@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class Rate<Q extends Quantity, V extends Quantity> {
+
     @NonNull
     V value;
     @NonNull
