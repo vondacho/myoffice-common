@@ -1,4 +1,4 @@
-package edu.noia.myoffice.common.util;
+package edu.noia.myoffice.common.util.regex;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

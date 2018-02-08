@@ -1,4 +1,4 @@
-package edu.noia.myoffice.common.rest.jackson;
+package edu.noia.myoffice.common.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import lombok.AccessLevel;

@@ -6,9 +6,17 @@ import lombok.EqualsAndHashCode;
 public class Percentage extends Rate<Quantity, Quantity> {
 
     public static Percentage ZERO = new Percentage(Quantity.ZERO);
-    public static Percentage HUNDRED = new Percentage(new Quantity(100L, Unit.SAMPLE));
+    public static Percentage HUNDRED = Percentage.of(100L);
 
-    public Percentage(Quantity value) {
+    private Percentage(Quantity value) {
         super(value, Unit.PERCENTAGE);
+    }
+
+    public static Percentage of(Long value) {
+        return new Percentage(new Quantity(value, Unit.SAMPLE));
+    }
+
+    public static Percentage of(String value) {
+        return new Percentage(new Quantity(value, Unit.SAMPLE));
     }
 }

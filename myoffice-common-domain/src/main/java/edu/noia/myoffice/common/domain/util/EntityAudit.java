@@ -24,7 +24,7 @@ public class EntityAudit {
         events.add(event);
     }
 
-    public void audit(Event event) {
+    public void add(Event event) {
         events.add(event);
     }
 

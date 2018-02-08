@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 import org.springframework.data.util.Pair;
 
@@ -49,7 +50,7 @@ public abstract class AbstractValueObjectConverter<T> implements UserType {
     }
 
     @Override
-    public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner) throws HibernateException, SQLException {
         return mapGet(Arrays.stream(names)
             .map(name -> {
                 try {
@@ -65,7 +66,7 @@ public abstract class AbstractValueObjectConverter<T> implements UserType {
     public abstract T mapGet(Map<String, Object> values);
 
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
         if (value != null) {
             for (Map.Entry<String, Object> e : mapSet((T)value).entrySet()) {
                 st.setObject(index++, e.getValue(), attributes.get(e.getKey()));

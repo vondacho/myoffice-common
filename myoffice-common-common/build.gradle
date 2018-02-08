@@ -1,0 +1,6 @@
+dependencies {
+    compile("edu.noia.myoffice:myoffice-common-domain:${version}")
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.2'
+    compile group: 'org.springframework', name: 'spring-core', version: '5.0.2.RELEASE'
+
+}

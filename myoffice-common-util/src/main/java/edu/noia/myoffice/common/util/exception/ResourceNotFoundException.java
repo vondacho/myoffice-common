@@ -1,4 +1,4 @@
-package edu.noia.myoffice.common.domain.exception;
+package edu.noia.myoffice.common.util.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;

@@ -4,6 +4,7 @@ allprojects {
     version = '0.0.4'
     repositories {
         jcenter()
+        maven { url "https://repo.spring.io/milestone" }
         mavenLocal()
         maven {
             name 'mavenRemote'
@@ -18,12 +19,13 @@ allprojects {
 
 buildscript {
     ext {
-        springBootVersion = '1.5.8.RELEASE'
+        springBootVersion = '2.0.0.M7'
         lombokVersion = '1.16.18'
         mokitoVersion = '2.8.47'
     }
     repositories {
         jcenter()
+        maven { url "https://repo.spring.io/milestone" }
         mavenLocal()
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -81,10 +83,13 @@ subprojects {
     }
     task install(dependsOn: publishToMavenLocal)
     task deploy(dependsOn: publish)
+
+    bootJar.enabled = false
+    jar.enabled = true
 }
 
 gradle.taskGraph.whenReady { graph ->
-    def badTasks = ['bootRepackage','findMainClass', 'startScripts', 'distTar', 'distZip']
+    def badTasks = ['startScripts', 'distTar', 'distZip']
     graph.allTasks.findAll {it.name in badTasks}.each { task ->
         task.enabled = false
     }

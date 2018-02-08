@@ -1,7 +1,7 @@
 package edu.noia.myoffice.common.rest.exception;
 
-import edu.noia.myoffice.common.domain.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -72,10 +72,11 @@ public class EndpointExceptionHandler {
                 ).collect(Collectors.toList());
     }
 
+
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseBody
-    public List<ErrorModel> constraintViolation(final DataIntegrityViolationException exception) {
+    public List<ErrorModel> dataIntegrityViolation(final DataIntegrityViolationException exception) {
         LOG.warn(VIOLATION_MESSAGE, exception.getMessage());
         return Collections.singletonList(new ErrorModel(exception));
     }
@@ -96,7 +97,7 @@ public class EndpointExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public List<ErrorModel> internalServerError(final Exception exception) {
-        LOG.error("Oups! Something went wrong...", exception);
+        LOG.error("Oops! Something went wrong...", exception);
         return Collections.singletonList(new ErrorModel(exception));
     }
 

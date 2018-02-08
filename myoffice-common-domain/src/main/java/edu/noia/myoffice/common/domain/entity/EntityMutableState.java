@@ -1,9 +1,7 @@
 package edu.noia.myoffice.common.domain.entity;
 
-public interface EntityMutableState<
-        M extends EntityMutableState,
-        S extends EntityState> {
+public interface EntityMutableState extends EntityState {
 
-    M modify(S modifier);
-    M patch(S modifier);
+    EntityMutableState modify(EntityState modifier);
+    EntityMutableState patch(EntityState modifier);
 }

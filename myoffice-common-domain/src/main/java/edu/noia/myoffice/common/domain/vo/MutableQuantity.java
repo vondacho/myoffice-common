@@ -41,6 +41,11 @@ public class MutableQuantity extends Quantity {
         return (T) this;
     }
 
+    public <T extends Quantity> T set(T quantity) {
+        value = quantity.value;
+        return (T) this;
+    }
+
     public MutableQuantity toMutable() {
         return this;
     }

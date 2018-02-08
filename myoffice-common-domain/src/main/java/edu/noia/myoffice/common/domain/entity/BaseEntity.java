@@ -1,69 +1,50 @@
 package edu.noia.myoffice.common.domain.entity;
 
-import edu.noia.myoffice.common.domain.vo.Identity;
 import edu.noia.myoffice.common.domain.repository.EntityRepository;
+import edu.noia.myoffice.common.domain.vo.Identity;
 import lombok.*;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 @EqualsAndHashCode(of = "id", callSuper = false)
+@Accessors(chain = true)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PROTECTED)
-public abstract class BaseEntity<
-        E extends BaseEntity,
-        I extends Identity,
-        S extends EntityState,
-        M extends EntityMutableState,
-        R extends EntityRepository> implements Entity<E, I, S, R> {
+public abstract class BaseEntity<I extends Identity, S extends EntityState, M extends EntityMutableState>
+        implements Entity<I, S> {
 
     @Getter
-    I id;
+    @Setter(value = AccessLevel.PROTECTED)
     @NonNull
-    S state;
-
-    protected E setId(@NonNull I id) {
-        this.id = id;
-        return (E)this;
-    }
+    I id;
+    @Setter(value = AccessLevel.PROTECTED)
+    @NonNull
+    M state;
 
     @Override
     public S getState() {
-        return toImmutableState(state);
-    }
-
-    protected E setState(@NonNull S state) {
-        this.state = state;
-        return (E)this;
+        return toImmutableState();
     }
 
     @Override
-    public E modify(S modifier) {
-        modifier = validate(modifier);
-        return setState((S)toMutable().modify(modifier));
+    public Entity<I, S> modify(S modifier) {
+        validate(modifier);
+        state.modify(modifier);
+        return this;
     }
 
     @Override
-    public E patch(S modifier) {
-        return setState(validate((S)toMutable(state).patch(modifier)));
+    public Entity<I, S> patch(S modifier) {
+        state.patch(modifier);
+        validate((S)state);
+        return this;
     }
 
     @Override
-    public E save(R repository) {
-        return (E)repository.save(id, state);
+    public <R extends EntityRepository<Entity<I, S>, I, S>> Entity<I, S> save(R repository) {
+        return repository.save(id, (S)state);
     }
 
-    protected M toMutable() {
-        return toMutable(state);
-    }
-
-    protected M toMutable(S state) {
-        return state instanceof EntityMutableState ? (M)state : toMutableState(state);
-    }
-
-    protected abstract M toMutableState(S state);
-
-    protected abstract S toImmutableState(S state);
-
-    protected abstract I identify();
-
-    protected abstract S validate(S state);
+    protected abstract S toImmutableState();
 }

@@ -1,4 +1,4 @@
-package edu.noia.myoffice.common.util;
+package edu.noia.myoffice.common.util.validation;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

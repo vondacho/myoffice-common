@@ -1,4 +1,4 @@
-package edu.noia.myoffice.common.rest.jackson;
+package edu.noia.myoffice.common.mixin;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

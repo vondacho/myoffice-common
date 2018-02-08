@@ -1,21 +1,19 @@
 package edu.noia.myoffice.common.domain.entity;
 
-import edu.noia.myoffice.common.domain.vo.Identity;
 import edu.noia.myoffice.common.domain.repository.EntityRepository;
+import edu.noia.myoffice.common.domain.vo.Identity;
 
-public interface Entity<
-        E extends Entity,
-        I extends Identity,
-        S extends EntityState,
-        R extends EntityRepository> {
+public interface Entity<I extends Identity, S extends EntityState> {
 
     I getId();
 
     S getState();
 
-    E modify(S modifier);
+    Entity<I,S> modify(S modifier);
 
-    E patch(S modifier);
+    Entity<I,S> patch(S modifier);
 
-    E save(R repository);
+    <R extends EntityRepository<Entity<I,S> ,I, S>> Entity<I,S>  save(R repository);
+
+    void validate(S state);
 }

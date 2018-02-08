@@ -1,15 +1,14 @@
-package edu.noia.myoffice.common.rest.jackson;
+package edu.noia.myoffice.common.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import edu.noia.myoffice.common.domain.vo.Amount;
+import edu.noia.myoffice.common.domain.vo.Quantity;
+import edu.noia.myoffice.common.domain.vo.Unit;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -19,8 +18,20 @@ import java.util.Optional;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@JsonComponent
 public class CommonSerializers {
+
+    public static Module getModule() {
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(UUID.class, new UUIDDeserializer());
+        module.addDeserializer(LocalDate.class, new LocalDateDeserializer());
+        module.addDeserializer(Amount.class, new AmountDeserializer());
+        module.addDeserializer(Quantity.class, new QuantityDeserializer());
+        module.addSerializer(UUID.class, new UUIDSerializer());
+        module.addSerializer(LocalDate.class, new LocalDateSerializer());
+        module.addSerializer(Amount.class, new AmountSerializer());
+        module.addSerializer(Quantity.class, new QuantitySerializer());
+        return module;
+    }
 
     public static class UUIDSerializer extends JsonSerializer<UUID> {
         @Override
@@ -75,6 +86,25 @@ public class CommonSerializers {
             return Optional.ofNullable(p.readValueAs(String.class))
                     .filter(StringUtils::hasText)
                     .map(Amount::ofFrancs)
+                    .orElse(null);
+        }
+    }
+
+    public static class QuantitySerializer extends JsonSerializer<Quantity> {
+        @Override
+        public void serialize(Quantity quantity, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            if (quantity != null) {
+                gen.writeString(quantity.asString());
+            }
+        }
+    }
+
+    public static class QuantityDeserializer extends JsonDeserializer<Quantity> {
+        @Override
+        public Quantity deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+            return Optional.ofNullable(p.readValueAs(String.class))
+                    .filter(StringUtils::hasText)
+                    .map(s -> new Quantity(s, Unit.SAMPLE))
                     .orElse(null);
         }
     }

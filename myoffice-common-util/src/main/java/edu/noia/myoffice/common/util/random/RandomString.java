@@ -1,4 +1,4 @@
-package edu.noia.myoffice.common.util;
+package edu.noia.myoffice.common.util.random;
 
 import java.security.SecureRandom;
 import java.util.Locale;
@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
- * https://stackoverflow.com/questions/41107/how-to-generate-a-random-alpha-numeric-string
+ * @https://stackoverflow.com/questions/41107/how-to-generate-a-random-alpha-numeric-string
  */
 public class RandomString {
 
