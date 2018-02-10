@@ -22,6 +22,7 @@ buildscript {
         springBootVersion = '2.0.0.M7'
         lombokVersion = '1.16.18'
         mokitoVersion = '2.8.47'
+        jacksonVersion = '2.9.2'
     }
     repositories {
         jcenter()
@@ -91,6 +92,31 @@ gradle.taskGraph.whenReady { graph ->
     def badTasks = ['startScripts', 'distTar', 'distZip']
     graph.allTasks.findAll {it.name in badTasks}.each { task ->
         task.enabled = false
+    }
+}
+
+project(':myoffice-common-common') {
+    dependencies {
+        compile project(':myoffice-common-domain')
+    }
+}
+
+project(':myoffice-common-domain') {
+    dependencies {
+        compile project(':myoffice-common-util')
+    }
+}
+
+project(':myoffice-common-data') {
+    dependencies {
+        compile project(':myoffice-common-util')
+    }
+}
+
+project(':myoffice-common-rest') {
+    dependencies {
+        compile project(':myoffice-common-common'),
+                project(':myoffice-common-util')
     }
 }
 
