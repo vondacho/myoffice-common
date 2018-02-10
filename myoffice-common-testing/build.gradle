@@ -3,6 +3,6 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-test'
     compile 'com.jayway.restassured:spring-mock-mvc:2.9.0'
-    compile 'org.mockito:mockito-core:2.8.47'
-    compile 'org.mockito:mockito-inline:2.8.47'
+    compile("org.mockito:mockito-core:${mokitoVersion}")
+    compile("org.mockito:mockito-inline:${mokitoVersion}")
 }

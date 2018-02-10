@@ -1,7 +1,7 @@
 allprojects {
     apply plugin: 'java'
     group 'edu.noia.myoffice'
-    version = '0.0.4'
+    version = '0.0.5'
     repositories {
         jcenter()
         maven { url "https://repo.spring.io/milestone" }
@@ -54,7 +54,6 @@ subprojects {
     dependencies {
         compile("org.projectlombok:lombok:${lombokVersion}")
         testCompile("org.mockito:mockito-core:${mokitoVersion}")
-        testCompile 'org.springframework.boot:spring-boot-starter-test'
     }
     jar {
         manifest.attributes provider: 'gradle'

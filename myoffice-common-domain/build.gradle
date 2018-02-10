@@ -1,3 +1,4 @@
 dependencies {
     compile("edu.noia.myoffice:myoffice-common-util:${version}")
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
