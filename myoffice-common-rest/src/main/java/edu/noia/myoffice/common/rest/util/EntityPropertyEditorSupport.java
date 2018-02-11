@@ -1,12 +1,13 @@
 package edu.noia.myoffice.common.rest.util;
 
-import edu.noia.myoffice.common.util.exception.ResourceNotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.beans.PropertyEditorSupport;
 import java.util.Optional;
 import java.util.function.Function;
+
+import static edu.noia.myoffice.common.util.exception.ExceptionSuppliers.notFound;
 
 /**
  * {@link PropertyEditorSupport} pour récupérer un objet à partir d'un string. Le string sera transformé dans un identifiant.
@@ -50,8 +51,7 @@ public class EntityPropertyEditorSupport<E, I> extends PropertyEditorSupport {
                 .map(value -> (E)value)
                 .map(entityToIdentifiant)
                 .map(identifiantToText)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("No %s has been found", entityClass)));
+                .orElseThrow(notFound(entityClass));
     }
 
     @Override
@@ -59,8 +59,7 @@ public class EntityPropertyEditorSupport<E, I> extends PropertyEditorSupport {
         E entity = Optional.ofNullable(text)
                 .map(textToIdentifiant)
                 .flatMap(identifiantToEntity)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("No %s identified by %s has been found", entityClass, text)));
+                .orElseThrow(notFound(entityClass, text));
         this.setValue(entity);
     }
 }

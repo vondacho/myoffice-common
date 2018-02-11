@@ -1,12 +1,13 @@
 package edu.noia.myoffice.common.rest.util;
 
-import edu.noia.myoffice.common.util.exception.ResourceNotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.beans.PropertyEditorSupport;
 import java.util.Optional;
 import java.util.function.Function;
+
+import static edu.noia.myoffice.common.util.exception.ExceptionSuppliers.anyException;
 
 @RequiredArgsConstructor
 public class IdentifiantPropertyEditorSupport<I> extends PropertyEditorSupport {
@@ -17,8 +18,7 @@ public class IdentifiantPropertyEditorSupport<I> extends PropertyEditorSupport {
     public void setAsText(String text) {
         I identifiant = Optional.ofNullable(text)
                 .map(this.textToIdentifiant)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("No identifier in %s has been found", text)));
+                .orElseThrow(anyException(String.format("No identifier in %s has been found", text)));
         this.setValue(identifiant);
     }
 }
