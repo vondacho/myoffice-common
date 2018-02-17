@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,19 +36,18 @@ public class EntityAudit {
         return events.get(events.size()-1);
     }
 
-    public List<Event> between(LocalDateTime from, LocalDateTime to) {
+    public List<Event> between(Instant from, Instant to) {
         return events.stream()
                 .filter(event -> event.getTimestamp().isAfter(from) && event.getTimestamp().isBefore(to))
                 .collect(toList());
     }
 
-    public List<Event> from(LocalDateTime from) {
+    public List<Event> from(Instant from) {
         return events.stream()
                 .filter(event -> event.getTimestamp().isAfter(from))
                 .collect(toList());
     }
-
-    public List<Event> until(LocalDateTime to) {
+    public List<Event> until(Instant to) {
         return events.stream()
                 .filter(event -> event.getTimestamp().isBefore(to))
                 .collect(toList());

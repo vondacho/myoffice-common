@@ -1,15 +1,20 @@
 package edu.noia.myoffice.common.domain.event;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Getter
-@RequiredArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@FieldDefaults(level = AccessLevel.PROTECTED)
-public class BaseEvent implements Event {
+@RequiredArgsConstructor(staticName = "of")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class BaseEvent<T extends EventPayload> implements Event<T> {
+
     @NonNull
-    LocalDateTime timestamp;
+    T payload;
+    @NonNull
+    Instant timestamp;
 }

@@ -1,7 +1,10 @@
 package edu.noia.myoffice.common.domain.event;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
-public interface Event {
-    LocalDateTime getTimestamp();
+public interface Event<T> {
+
+    T getPayload();
+
+    Instant getTimestamp();
 }
