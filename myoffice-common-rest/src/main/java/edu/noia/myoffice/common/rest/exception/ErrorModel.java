@@ -13,7 +13,7 @@ public class ErrorModel {
     private String field;
     private String message;
 
-    ErrorModel(Exception e) {
+    public ErrorModel(Exception e) {
         this.message = e.getMessage();
     }
 }

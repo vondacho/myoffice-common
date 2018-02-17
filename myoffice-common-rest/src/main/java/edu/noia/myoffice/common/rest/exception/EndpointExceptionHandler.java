@@ -1,7 +1,7 @@
 package edu.noia.myoffice.common.rest.exception;
 
+import edu.noia.myoffice.common.util.exception.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -72,7 +72,6 @@ public class EndpointExceptionHandler {
                 ).collect(Collectors.toList());
     }
 
-
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseBody
@@ -109,7 +108,7 @@ public class EndpointExceptionHandler {
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseBody
     public List<ErrorModel> resourceNotFound(final Exception exception) {
         return Collections.singletonList(new ErrorModel(exception));
