@@ -51,6 +51,8 @@ public class DefaultBroker<T, I> implements Broker<T, I> {
             processor.apply(data).ifPresent(d -> consumer.accept(d));
         }
 
-        public void complete() {}
+        public void complete() {
+            // to be overridden by subclasses
+        }
     }
 }
