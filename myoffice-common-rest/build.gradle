@@ -1,6 +1,7 @@
 dependencies {
     compile("edu.noia.myoffice:myoffice-common-common:${version}")
     compile("edu.noia.myoffice:myoffice-common-util:${version}")
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.0.M7'
-    compile group: 'org.springframework', name: 'spring-tx', version: '5.0.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile("org.springframework:spring-tx:${springReleaseVersion}")
+
 }
