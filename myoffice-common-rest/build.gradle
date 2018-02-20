@@ -3,5 +3,6 @@ dependencies {
     compile("edu.noia.myoffice:myoffice-common-util:${version}")
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile("org.springframework:spring-tx:${springReleaseVersion}")
+    compile("org.springframework.data:spring-data-envers:${springEnversVersion}")
 
 }
