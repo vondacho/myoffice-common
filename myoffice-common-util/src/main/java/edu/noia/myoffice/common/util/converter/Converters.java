@@ -6,6 +6,9 @@ import java.time.ZoneOffset;
 
 public class Converters {
 
+    private Converters() {
+    }
+
     public static LocalDateTime toLocalDateTimeUTC(Instant instant) {
         return LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
     }

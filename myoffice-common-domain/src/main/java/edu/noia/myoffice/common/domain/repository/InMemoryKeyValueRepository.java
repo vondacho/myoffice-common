@@ -58,11 +58,12 @@ public class InMemoryKeyValueRepository<E extends Entity<E, I, S>, I extends Ide
 
         @Override
         protected S cloneState() {
-            return null;
+            return (S) this;
         }
 
         @Override
         public void validate(S state) {
+            throw new UnsupportedOperationException();
         }
     }
 }

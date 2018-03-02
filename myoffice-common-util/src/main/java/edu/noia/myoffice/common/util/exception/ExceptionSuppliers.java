@@ -4,6 +4,9 @@ import java.util.function.Supplier;
 
 public class ExceptionSuppliers {
 
+    private ExceptionSuppliers() {
+    }
+
     public static Supplier<RuntimeException> anyException(String message) {
         return () -> new RuntimeException(message);
     }
@@ -17,8 +20,8 @@ public class ExceptionSuppliers {
                 clazz, identifier.toString()));
     }
 
-    public static <T,U> Supplier<RuntimeException> itemNotFound(Class itemClazz, T itemIdentifier,
-                                                                Class containerClazz, U containerIdentifier) {
+    public static <T, U> Supplier<RuntimeException> itemNotFound(Class itemClazz, T itemIdentifier,
+                                                                 Class containerClazz, U containerIdentifier) {
         return () -> new EntityNotFoundException(
                 String.format("No %s identified by %s has been found in %s identified by %s",
                         itemClazz, itemIdentifier.toString(),

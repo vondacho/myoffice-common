@@ -1,14 +1,14 @@
 package edu.noia.myoffice.common.data.jpa.util;
 
 import edu.noia.myoffice.common.util.search.FindCriteria;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Optional;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FindCriteriaSpecification {
+
+    private FindCriteriaSpecification() {
+    }
 
     public static <E> Optional<Specification<E>> from(FindCriteria criteria) {
         return Optional.ofNullable(toSpec(criteria));

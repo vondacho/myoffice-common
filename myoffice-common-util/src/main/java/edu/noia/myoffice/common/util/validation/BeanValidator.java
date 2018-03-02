@@ -1,16 +1,15 @@
 package edu.noia.myoffice.common.util.validation;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 import java.util.Optional;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BeanValidator {
+
+    private BeanValidator() {
+    }
 
     private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 

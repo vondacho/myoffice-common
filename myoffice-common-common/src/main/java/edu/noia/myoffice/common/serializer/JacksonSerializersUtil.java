@@ -1,13 +1,14 @@
 package edu.noia.myoffice.common.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class JacksonSerializersUtil {
+
+    private JacksonSerializersUtil() {
+    }
+
     public static void writeString(JsonGenerator gen, String value) throws IOException {
         if (value != null) {
             gen.writeString(value.trim());

@@ -23,11 +23,6 @@ public enum Unit {
         this.isBasis = isBasis;
     }
 
-    Unit(@NonNull String factor, boolean isBasis) {
-        this.factor = new BigDecimal(factor);
-        this.isBasis = isBasis;
-    }
-
     BigDecimal factor;
     @Getter
     boolean isBasis;
