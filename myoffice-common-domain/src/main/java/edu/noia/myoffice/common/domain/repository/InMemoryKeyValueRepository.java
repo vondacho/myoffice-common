@@ -1,47 +1,68 @@
 package edu.noia.myoffice.common.domain.repository;
 
+import edu.noia.myoffice.common.domain.entity.BaseEntity;
 import edu.noia.myoffice.common.domain.entity.Entity;
 import edu.noia.myoffice.common.domain.entity.EntityState;
 import edu.noia.myoffice.common.domain.vo.Identity;
 import edu.noia.myoffice.common.util.search.FindCriteria;
 import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-@RequiredArgsConstructor
+import static java.util.stream.Collectors.toList;
+
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class InMemoryKeyValueRepository<E extends Entity<I,S>, I extends Identity, S extends EntityState>
-        implements EntityRepository<E,I,S> {
+public class InMemoryKeyValueRepository<E extends Entity<E, I, S>, I extends Identity, S extends EntityState> implements EntityRepository<E, I, S> {
 
-    HashMap<I,E> store = new HashMap<>();
-    @NonNull
-    BiFunction<I,S,E> toEntityFunction;
+    HashMap<I, S> store = new HashMap<>();
 
+    BiFunction<I, S, E> entityCreator = (id, state) -> (E) new DefaultEntity(id, state);
+
+    public InMemoryKeyValueRepository(@NonNull BiFunction<I, S, E> entityCreator) {
+        this.entityCreator = entityCreator;
+    }
+
+    @Override
     public Optional<E> findOne(I id) {
-        return Optional.ofNullable(store.get(id));
+        return Optional.ofNullable(store.get(id)).map(s -> entityCreator.apply(id, s));
     }
 
+    @Override
     public List<E> findByCriteria(List<FindCriteria> criteria) {
-        return new ArrayList(store.values());
+        return store.entrySet().stream().map(e -> entityCreator.apply(e.getKey(), e.getValue())).collect(toList());
     }
 
-    public E save(E entity) {
-        store.put(entity.getId(), entity);
-        return entity;
-    }
-
+    @Override
     public E save(I id, S state) {
-        return save(toEntityFunction.apply(id, state));
+        store.put(id, state);
+        return entityCreator.apply(id, state);
     }
 
+    @Override
     public void delete(I id) {
         store.remove(id);
+    }
+
+    private class DefaultEntity extends BaseEntity<DefaultEntity, I, S> {
+
+        DefaultEntity(I identity, S state) {
+            super(identity, state);
+        }
+
+        @Override
+        protected S cloneState() {
+            return null;
+        }
+
+        @Override
+        public void validate(S state) {
+        }
     }
 }

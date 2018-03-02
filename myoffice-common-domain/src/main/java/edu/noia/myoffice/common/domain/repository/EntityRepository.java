@@ -8,7 +8,7 @@ import edu.noia.myoffice.common.util.search.FindCriteria;
 import java.util.List;
 import java.util.Optional;
 
-public interface EntityRepository<E extends Entity<I,S>, I extends Identity, S extends EntityState> {
+public interface EntityRepository<E extends Entity<E, I, S>, I extends Identity, S extends EntityState> {
 
     Optional<E> findOne(I id);
 
@@ -18,9 +18,11 @@ public interface EntityRepository<E extends Entity<I,S>, I extends Identity, S e
         return findByCriteria(FindCriteria.empty());
     }
 
-    E save(E entity);
-
     E save(I id, S state);
+
+    default E save(Entity<E, I, S> entity) {
+        return save(entity.getId(), entity.getState());
+    }
 
     void delete(I id);
 }

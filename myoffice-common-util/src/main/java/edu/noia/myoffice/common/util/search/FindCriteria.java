@@ -1,7 +1,9 @@
 package edu.noia.myoffice.common.util.search;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,10 +13,11 @@ import java.util.regex.Pattern;
 
 @Getter
 @AllArgsConstructor(staticName = "of")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class FindCriteria {
-    private String key;
-    private String operation;
-    private Object value;
+    String key;
+    String operation;
+    Object value;
 
     public static List<FindCriteria> empty() {
         return Collections.emptyList();

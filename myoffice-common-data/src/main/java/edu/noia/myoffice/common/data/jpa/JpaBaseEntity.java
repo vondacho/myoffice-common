@@ -3,13 +3,8 @@ package edu.noia.myoffice.common.data.jpa;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @MappedSuperclass
 @Getter
@@ -17,15 +12,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class JpaBaseEntity {
 
     @Id
-    @GenericGenerator(
-            name = "ID_GENERATOR",
-            strategy = "enhanced-sequence",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "seq_myoffice_sequence"),
-                    @Parameter(name = "increment_size", value = "100"),
-                    @Parameter(name = "optimizer", value = "pooled-lo")
-            })
-    @GeneratedValue(generator = "ID_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pk_id")
     Long primaryId;
 }

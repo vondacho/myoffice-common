@@ -1,18 +1,26 @@
 package edu.noia.myoffice.common.domain.entity;
 
+import edu.noia.myoffice.common.domain.event.BaseEvent;
+import edu.noia.myoffice.common.domain.event.Event;
+import edu.noia.myoffice.common.domain.event.EventPayload;
 import edu.noia.myoffice.common.domain.repository.EntityRepository;
 import edu.noia.myoffice.common.domain.vo.Identity;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
+
+@ToString(of = {"id", "state"}, doNotUseGetters = true)
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Accessors(chain = true)
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PROTECTED)
-public abstract class BaseEntity<I extends Identity, S extends EntityState, M extends EntityMutableState>
-        implements Entity<I, S> {
+public abstract class BaseEntity<E extends BaseEntity<E, I, S>, I extends Identity, S extends EntityState>
+        implements Entity<E, I, S> {
 
     @Getter
     @Setter(value = AccessLevel.PROTECTED)
@@ -20,31 +28,41 @@ public abstract class BaseEntity<I extends Identity, S extends EntityState, M ex
     I id;
     @Setter(value = AccessLevel.PROTECTED)
     @NonNull
-    M state;
+    S state;
 
     @Override
     public S getState() {
-        return toImmutableState();
+        return cloneState();
     }
 
     @Override
-    public Entity<I, S> modify(S modifier) {
+    public E modify(S modifier) {
         validate(modifier);
         state.modify(modifier);
-        return this;
+        return (E) this;
     }
 
     @Override
-    public Entity<I, S> patch(S modifier) {
+    public E patch(S modifier) {
         state.patch(modifier);
-        validate((S)state);
-        return this;
+        validate(state);
+        return (E) this;
     }
 
     @Override
-    public <R extends EntityRepository<Entity<I, S>, I, S>> Entity<I, S> save(R repository) {
-        return repository.save(id, (S)state);
+    public E save(EntityRepository<E, I, S> repository) {
+        state = repository.save(id, state).state;
+        return (E) this;
     }
 
-    protected abstract S toImmutableState();
+    protected E andEvent(EventPayload eventPayload) {
+        state.andEvent(BaseEvent.of(eventPayload, Instant.now()));
+        return (E) this;
+    }
+
+    public List<Event> getDomainEvents() {
+        return Collections.unmodifiableList(state.domainEvents());
+    }
+
+    protected abstract S cloneState();
 }

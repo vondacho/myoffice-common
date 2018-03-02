@@ -3,17 +3,17 @@ package edu.noia.myoffice.common.domain.entity;
 import edu.noia.myoffice.common.domain.repository.EntityRepository;
 import edu.noia.myoffice.common.domain.vo.Identity;
 
-public interface Entity<I extends Identity, S extends EntityState> {
+public interface Entity<E extends Entity<E, I, S>, I extends Identity, S extends EntityState> {
 
     I getId();
 
     S getState();
 
-    Entity<I,S> modify(S modifier);
+    E modify(S modifier);
 
-    Entity<I,S> patch(S modifier);
+    E patch(S modifier);
 
-    <R extends EntityRepository<Entity<I,S> ,I, S>> Entity<I,S>  save(R repository);
+    E save(EntityRepository<E, I, S> repository);
 
     void validate(S state);
 }
