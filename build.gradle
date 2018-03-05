@@ -95,21 +95,28 @@ gradle.taskGraph.whenReady { graph ->
     }
 }
 
-project(':myoffice-common-common') {
-    dependencies {
-        compile project(':myoffice-common-domain')
-    }
-}
-
 project(':myoffice-common-domain') {
     dependencies {
         compile project(':myoffice-common-util')
     }
 }
 
+project(':myoffice-common-common') {
+    dependencies {
+        compile project(':myoffice-common-domain')
+    }
+}
+
+project(':myoffice-common-event') {
+    dependencies {
+        compile project(':myoffice-common-domain')
+    }
+}
+
 project(':myoffice-common-data') {
     dependencies {
         compile project(':myoffice-common-util')
+        compile project(':myoffice-common-event')
     }
 }
 
