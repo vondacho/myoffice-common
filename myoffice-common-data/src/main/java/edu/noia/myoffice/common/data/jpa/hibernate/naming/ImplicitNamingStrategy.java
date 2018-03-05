@@ -1,4 +1,4 @@
-package edu.noia.myoffice.common.data.jpa.hibernate;
+package edu.noia.myoffice.common.data.jpa.hibernate.naming;
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.ImplicitJoinColumnNameSource;

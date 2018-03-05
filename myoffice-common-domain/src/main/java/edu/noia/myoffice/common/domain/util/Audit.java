@@ -15,11 +15,11 @@ import static java.util.stream.Collectors.toList;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EntityAudit {
+public class Audit {
 
     List<Event> events;
 
-    public EntityAudit(Event event) {
+    public Audit(Event event) {
         events = new ArrayList<>();
         events.add(event);
     }

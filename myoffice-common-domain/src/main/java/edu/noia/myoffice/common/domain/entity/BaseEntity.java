@@ -1,15 +1,12 @@
 package edu.noia.myoffice.common.domain.entity;
 
-import edu.noia.myoffice.common.domain.event.BaseEvent;
 import edu.noia.myoffice.common.domain.event.Event;
-import edu.noia.myoffice.common.domain.event.EventPayload;
 import edu.noia.myoffice.common.domain.repository.EntityRepository;
 import edu.noia.myoffice.common.domain.vo.Identity;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,12 +52,12 @@ public abstract class BaseEntity<E extends BaseEntity<E, I, S>, I extends Identi
         return (E) this;
     }
 
-    protected E andEvent(EventPayload eventPayload) {
-        state.andEvent(BaseEvent.of(eventPayload, Instant.now()));
+    protected E andEvent(Event event) {
+        state.andEvent(event);
         return (E) this;
     }
 
-    public List<Event> getDomainEvents() {
+    public List<Event> domainEvents() {
         return Collections.unmodifiableList(state.domainEvents());
     }
 

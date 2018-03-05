@@ -3,4 +3,5 @@ include 'myoffice-common-domain', 'myoffice-common-rest', 'myoffice-common-testi
 include 'myoffice-common-data'
 include 'myoffice-common-util'
 include 'myoffice-common-common'
+include 'myoffice-common-event'
 
