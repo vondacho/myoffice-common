@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class RdbmsEventStoreAdapter implements InternalEventStore {
         toPersistentEvent.apply(event).ifPresent(repository::save);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<JpaEventPublication> listPending100() {
         return repository.findTop100ByStatus(EventPublication.Status.PENDING);

@@ -10,6 +10,7 @@ import edu.noia.myoffice.common.domain.vo.Unit;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,11 +26,13 @@ public class CommonSerializers {
         module.addDeserializer(UUID.class, new UUIDDeserializer());
         module.addDeserializer(LocalDate.class, new LocalDateDeserializer());
         module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
+        module.addDeserializer(Instant.class, new InstantDeserializer());
         module.addDeserializer(Amount.class, new AmountDeserializer());
         module.addDeserializer(Quantity.class, new QuantityDeserializer());
         module.addSerializer(UUID.class, new UUIDSerializer());
         module.addSerializer(LocalDate.class, new LocalDateSerializer());
         module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
+        module.addSerializer(Instant.class, new InstantSerializer());
         module.addSerializer(Amount.class, new AmountSerializer());
         module.addSerializer(Quantity.class, new QuantitySerializer());
         return module;
@@ -75,9 +78,9 @@ public class CommonSerializers {
 
     public static class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
         @Override
-        public void serialize(LocalDateTime localDate, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            if (localDate != null) {
-                gen.writeString(localDate.format(DateTimeFormatter.ISO_DATE_TIME));
+        public void serialize(LocalDateTime localDateTime, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            if (localDateTime != null) {
+                gen.writeString(localDateTime.format(DateTimeFormatter.ISO_DATE_TIME));
             }
         }
     }
@@ -88,6 +91,25 @@ public class CommonSerializers {
             return Optional.ofNullable(p.readValueAs(String.class))
                     .filter(StringUtils::hasText)
                     .map(s -> LocalDateTime.parse(s, DateTimeFormatter.ISO_DATE_TIME))
+                    .orElse(null);
+        }
+    }
+
+    public static class InstantSerializer extends JsonSerializer<Instant> {
+        @Override
+        public void serialize(Instant instant, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            if (instant != null) {
+                gen.writeString(instant.toString());
+            }
+        }
+    }
+
+    public static class InstantDeserializer extends JsonDeserializer<Instant> {
+        @Override
+        public Instant deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+            return Optional.ofNullable(p.readValueAs(String.class))
+                    .filter(StringUtils::hasText)
+                    .map(Instant::parse)
                     .orElse(null);
         }
     }

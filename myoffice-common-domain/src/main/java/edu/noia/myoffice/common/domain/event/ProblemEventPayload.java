@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProblemEventPayload {
+public class ProblemEventPayload implements EventPayload {
     @NonNull
     List<Problem> problems;
 }

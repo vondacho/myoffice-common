@@ -23,6 +23,7 @@ buildscript {
         lombokVersion = '1.16.18'
         mokitoVersion = '2.8.47'
         jacksonVersion = '2.9.2'
+        h2databaseVersion = '1.4.196'
     }
     repositories {
         jcenter()

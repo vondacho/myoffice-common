@@ -8,6 +8,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
@@ -20,7 +21,8 @@ public class PublishPendingEventScheduler {
     @NonNull
     ExternalEventStore publisher;
 
-    @Scheduled(initialDelay = 3000, fixedDelayString = "${events.publisher.freq:3000}")
+    @Scheduled(fixedRate = 3000)
+    @Transactional
     public void sendEvents() {
         eventStore.listPending100().forEach(this::publish);
     }

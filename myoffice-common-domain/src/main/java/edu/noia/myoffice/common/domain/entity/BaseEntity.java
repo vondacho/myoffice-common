@@ -1,13 +1,14 @@
 package edu.noia.myoffice.common.domain.entity;
 
+import edu.noia.myoffice.common.domain.event.Audit;
 import edu.noia.myoffice.common.domain.event.Event;
+import edu.noia.myoffice.common.domain.event.EventPublisher;
 import edu.noia.myoffice.common.domain.repository.EntityRepository;
 import edu.noia.myoffice.common.domain.vo.Identity;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Collections;
 import java.util.List;
 
 @ToString(of = {"id", "state"}, doNotUseGetters = true)
@@ -26,6 +27,8 @@ public abstract class BaseEntity<E extends BaseEntity<E, I, S>, I extends Identi
     @Setter(value = AccessLevel.PROTECTED)
     @NonNull
     S state;
+
+    Audit audit = new Audit();
 
     @Override
     public S getState() {
@@ -52,13 +55,20 @@ public abstract class BaseEntity<E extends BaseEntity<E, I, S>, I extends Identi
         return (E) this;
     }
 
+    @Override
+    public E publishEvents(EventPublisher publisher) {
+        audit.all().forEach(publisher::accept);
+        audit.clear();
+        return (E) this;
+    }
+
     protected E andEvent(Event event) {
-        state.andEvent(event);
+        audit.and(event);
         return (E) this;
     }
 
     public List<Event> domainEvents() {
-        return Collections.unmodifiableList(state.domainEvents());
+        return audit.all();
     }
 
     protected abstract S cloneState();
