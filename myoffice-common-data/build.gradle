@@ -4,7 +4,6 @@ dependencies {
     compile("edu.noia.myoffice:myoffice-common-common:${version}")
     compile 'org.springframework.boot:spring-boot-starter-validation'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compile group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.0.0'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile("com.h2database:h2:${h2databaseVersion}")
 }

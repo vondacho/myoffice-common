@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaRepositories
-@EntityScan(basePackageClasses = {JpaEventPublication.class, com.vladmihalcea.hibernate.type.json.JsonStringType.class})
+@EntityScan(basePackageClasses = {JpaEventPublication.class})
 @Configuration
 public class DataComponentTestConfig {
 }

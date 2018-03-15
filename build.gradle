@@ -1,7 +1,7 @@
 allprojects {
     apply plugin: 'java'
     group 'edu.noia.myoffice'
-    version = '0.0.8'
+    version = '0.0.9'
     repositories {
         jcenter()
         maven { url "https://repo.spring.io/milestone" }
@@ -116,6 +116,7 @@ project(':myoffice-common-event') {
 
 project(':myoffice-common-data') {
     dependencies {
+        compile project(':myoffice-common-common')
         compile project(':myoffice-common-util')
         compile project(':myoffice-common-event')
     }

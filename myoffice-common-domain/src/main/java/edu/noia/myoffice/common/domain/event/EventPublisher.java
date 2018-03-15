@@ -1,6 +1,10 @@
 package edu.noia.myoffice.common.domain.event;
 
-import java.util.function.Consumer;
+public interface EventPublisher {
 
-public interface EventPublisher extends Consumer<Event> {
+    void publish(Event event);
+
+    default void publish(EventPayload payload) {
+        publish(BaseEvent.of(payload));
+    }
 }
