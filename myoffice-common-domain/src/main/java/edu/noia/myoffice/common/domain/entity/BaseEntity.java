@@ -74,7 +74,7 @@ public abstract class BaseEntity<E extends BaseEntity<E, I, S>, I extends Identi
         return andEvent(BaseEvent.of(payload, instant));
     }
 
-    public List<Event> domainEvents() {
+    public List<Event> getRegisteredEvents() {
         return audit.all();
     }
 

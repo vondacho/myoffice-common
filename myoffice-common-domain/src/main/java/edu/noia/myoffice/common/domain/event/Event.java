@@ -6,5 +6,9 @@ public interface Event<T> {
 
     T getPayload();
 
+    default String getName() {
+        return getPayload().getClass().getCanonicalName();
+    }
+
     Instant getTimestamp();
 }

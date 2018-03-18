@@ -21,7 +21,10 @@ public class PublishPendingEventScheduler {
     @NonNull
     ExternalEventStore publisher;
 
-    @Scheduled(fixedRate = 3000)
+    @Scheduled(
+            fixedRateString = "${event.publication.fixedRate.in.milliseconds:5000}",
+            initialDelayString = "${event.publication.initialDelay.in.milliseconds:5000}"
+    )
     @Transactional
     public void sendEvents() {
         eventStore.listPending100().forEach(this::publish);

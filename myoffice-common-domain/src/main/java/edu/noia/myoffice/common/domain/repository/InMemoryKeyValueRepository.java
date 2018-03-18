@@ -18,7 +18,7 @@ import java.util.function.BiFunction;
 import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PROTECTED)
 public class InMemoryKeyValueRepository<E extends Entity<E, I, S>, I extends Identity, S extends EntityState> implements EntityRepository<E, I, S> {
 
     HashMap<I, S> store = new HashMap<>();

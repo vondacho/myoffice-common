@@ -23,7 +23,7 @@ public interface Entity<E extends Entity<E, I, S>, I extends Identity, S extends
         return save(repository).publishEvents(publisher);
     }
 
-    List<Event> domainEvents();
+    List<Event> getRegisteredEvents();
 
     E publishEvents(EventPublisher publisher);
 

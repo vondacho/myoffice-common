@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
 
-public class AuditableEntityMixin extends BaseEntityMixin {
+public interface AuditableEntityMixin extends BaseEntityMixin {
 
     @JsonIgnore
-    LocalDateTime createdDate;
+    LocalDateTime getCreatedDate();
     @JsonIgnore
-    LocalDateTime lastModifiedDate;
+    LocalDateTime getLastModifiedDate();
     @JsonIgnore
-    String createdBy;
+    String getCreatedBy();
     @JsonIgnore
-    String lastModifiedBy;
+    String getLastModifiedBy();
 }

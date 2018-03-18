@@ -11,7 +11,9 @@ public class PhysicalNamingStrategy extends SpringPhysicalNamingStrategy {
     @Override
     public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
         return super.toPhysicalTableName(
-                new Identifier(PREFIX_TABLE_DB + name.getText(), name.isQuoted()),
+                new Identifier(
+                        name.getText().contains(PREFIX_TABLE_DB) ? name.getText() : PREFIX_TABLE_DB + name.getText(),
+                        name.isQuoted()),
                 context);
     }
 

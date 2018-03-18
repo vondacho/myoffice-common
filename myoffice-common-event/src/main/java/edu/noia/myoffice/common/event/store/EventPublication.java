@@ -10,6 +10,10 @@ public interface EventPublication extends Event<Event> {
 
     void publish(Instant at);
 
+    default Instant getEventTimestamp() {
+        return getPayload().getTimestamp();
+    }
+
     enum Status {
         PENDING, SENT
     }

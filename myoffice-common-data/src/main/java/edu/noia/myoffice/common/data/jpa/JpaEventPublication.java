@@ -5,6 +5,7 @@ import edu.noia.myoffice.common.event.store.EventPublication;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,16 +22,24 @@ import static edu.noia.myoffice.common.event.store.EventPublication.Status.SENT;
 public class JpaEventPublication extends JpaBaseEntity implements EventPublication {
 
     @NonNull
+    @Column(name = "eventName")
+    String name;
+
+    @NonNull
+    @Column(name = "event", length = 2048)
     Event payload;
+
+    @NonNull
+    Instant eventTimestamp;
+
+    Instant timestamp;
 
     @NonNull
     @Enumerated(EnumType.STRING)
     EventPublication.Status status;
 
-    Instant timestamp;
-
-    public static JpaEventPublication of(Event payload) {
-        return new JpaEventPublication(payload, PENDING);
+    public static JpaEventPublication of(Event event) {
+        return new JpaEventPublication(event.getName(), event, event.getTimestamp(), PENDING);
     }
 
     public void publish(Instant at) {
