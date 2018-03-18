@@ -1,6 +1,5 @@
 package edu.noia.myoffice.common.data.jpa;
 
-import edu.noia.myoffice.common.domain.event.Event;
 import edu.noia.myoffice.common.event.store.EventPublication;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +15,7 @@ import static edu.noia.myoffice.common.event.store.EventPublication.Status.SENT;
 
 @Entity(name = "event_publication")
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(staticName = "of")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JpaEventPublication extends JpaBaseEntity implements EventPublication {
@@ -27,20 +26,15 @@ public class JpaEventPublication extends JpaBaseEntity implements EventPublicati
 
     @NonNull
     @Column(name = "event", length = 2048)
-    Event payload;
+    String payload;
 
     @NonNull
     Instant eventTimestamp;
 
     Instant timestamp;
 
-    @NonNull
     @Enumerated(EnumType.STRING)
-    EventPublication.Status status;
-
-    public static JpaEventPublication of(Event event) {
-        return new JpaEventPublication(event.getName(), event, event.getTimestamp(), PENDING);
-    }
+    EventPublication.Status status = PENDING;
 
     public void publish(Instant at) {
         this.timestamp = at;

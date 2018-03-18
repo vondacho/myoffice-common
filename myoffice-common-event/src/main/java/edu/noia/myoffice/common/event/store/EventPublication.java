@@ -4,15 +4,11 @@ import edu.noia.myoffice.common.domain.event.Event;
 
 import java.time.Instant;
 
-public interface EventPublication extends Event<Event> {
+public interface EventPublication extends Event<String> {
 
     Status getStatus();
 
     void publish(Instant at);
-
-    default Instant getEventTimestamp() {
-        return getPayload().getTimestamp();
-    }
 
     enum Status {
         PENDING, SENT
