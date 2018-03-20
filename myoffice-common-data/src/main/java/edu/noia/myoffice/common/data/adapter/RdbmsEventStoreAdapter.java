@@ -27,14 +27,14 @@ public class RdbmsEventStoreAdapter implements InternalEventStore {
     @Override
     public void accept(Event event) {
         repository.save(JpaEventPublication.of(
-                event.getName(),
-                serializeEvent(event),
+                serialize(event.getEventClass()),
+                serialize(event),
                 event.getTimestamp()));
     }
 
-    private String serializeEvent(Event event) {
+    private <T> String serialize(T any) {
         try {
-            return objectMapper.writeValueAsString(event);
+            return objectMapper.writeValueAsString(any);
         } catch (JsonProcessingException e) {
             return null;
         }
