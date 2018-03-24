@@ -1,10 +1,25 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.0.RELEASE'
+    }
+    repositories {
+        jcenter()
+        mavenLocal()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5'
+        classpath 'io.franzbecker:gradle-lombok:1.10'
+    }
+}
+
 allprojects {
     apply plugin: 'java'
     group 'edu.noia.myoffice'
     version = '0.0.10'
     repositories {
         jcenter()
-        maven { url "https://repo.spring.io/milestone" }
         mavenLocal()
         maven {
             name 'mavenRemote'
@@ -17,30 +32,6 @@ allprojects {
     }
 }
 
-buildscript {
-    ext {
-        springBootVersion = '2.0.0.RC1'
-        lombokVersion = '1.16.18'
-        mokitoVersion = '2.8.47'
-        jacksonVersion = '2.9.2'
-        h2DatabaseVersion = '1.4.196'
-        hsqlDatabaseVersion = '2.4.0'
-    }
-    repositories {
-        jcenter()
-        maven { url "https://repo.spring.io/milestone" }
-        mavenLocal()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5'
-        classpath 'io.franzbecker:gradle-lombok:1.10'
-    }
-}
 
 subprojects {
     apply plugin: 'io.spring.dependency-management'
@@ -49,6 +40,13 @@ subprojects {
     apply plugin: 'org.sonarqube'
     apply plugin: 'io.franzbecker.gradle-lombok'
     sourceCompatibility = 1.8
+    ext {
+        lombokVersion = '1.16.18'
+        mokitoVersion = '2.8.47'
+        jacksonVersion = '2.9.2'
+        h2DatabaseVersion = '1.4.196'
+        hsqlDatabaseVersion = '2.4.0'
+    }
     dependencyManagement {
         imports {
             mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
