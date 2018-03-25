@@ -2,7 +2,11 @@ package edu.noia.myoffice.common.domain.entity;
 
 public interface EntityState {
 
-    EntityState modify(EntityState modifier);
+    default EntityState modify(EntityState modifier) {
+        return this;
+    }
 
-    EntityState patch(EntityState modifier);
+    default EntityState patch(EntityState modifier) {
+        return this;
+    }
 }
