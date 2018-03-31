@@ -9,16 +9,25 @@ import java.math.BigDecimal;
 public class Amount extends Quantity {
     public static final Amount ZERO = Amount.ofCentimes(0L);
 
+    private Amount(BigDecimal value) {
+        super(value, Unit.CHF_CENT);
+    }
+
     private Amount(long value) {
-        super(value, Unit.CENTIMES);
+        this(BigDecimal.valueOf(value));
     }
 
-    private Amount (BigDecimal value) {
-        super(value, Unit.CENTIMES);
-    }
-
-    public static Amount of(@NonNull Amount amount) {
+    public static Amount from(@NonNull Amount amount) {
         return new Amount(amount.value);
+    }
+
+    public static Amount from(@NonNull Quantity quantity) {
+        if (quantity.getUnit().getFamily() == Unit.Family.CURRENCY) {
+            return new Amount(quantity.ichange(Unit.CHF_CENT).toLong());
+        }
+        throw new IllegalArgumentException(String.format(
+                "incompatible operand type; actual is %s, expected is %s",
+                quantity.getUnit().getFamily(), Unit.Family.CURRENCY));
     }
 
     public static Amount ofCentimes(@NonNull Long value) {
@@ -31,10 +40,6 @@ public class Amount extends Quantity {
 
     public static Amount ofFrancs(@NonNull String value) {
         return new Amount(new BigDecimal(value).movePointRight(2));
-    }
-
-    public Amount negate() {
-        return new Amount(value.negate());
     }
 
     public Long toCentimes() {
@@ -51,10 +56,6 @@ public class Amount extends Quantity {
 
     public String asFrancs() {
         return value.movePointLeft(2).stripTrailingZeros().toPlainString();
-    }
-
-    public MutableAmount toMutable() {
-        return new MutableAmount(this);
     }
 
     protected Amount of(BigDecimal value) {

@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import edu.noia.myoffice.common.domain.vo.Amount;
-import edu.noia.myoffice.common.domain.vo.Quantity;
-import edu.noia.myoffice.common.domain.vo.Unit;
+import edu.noia.myoffice.common.domain.vo.*;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -17,9 +15,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
+import static edu.noia.myoffice.common.util.converter.Converters.toLocalDateTimeUTC;
+
 public class CommonSerializers {
 
-    private CommonSerializers() {}
+    private CommonSerializers() {
+    }
 
     public static Module getModule() {
         SimpleModule module = new SimpleModule();
@@ -28,13 +29,15 @@ public class CommonSerializers {
         module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
         module.addDeserializer(Instant.class, new InstantDeserializer());
         module.addDeserializer(Amount.class, new AmountDeserializer());
+        module.addDeserializer(Percentage.class, new PercentageDeserializer());
         module.addDeserializer(Quantity.class, new QuantityDeserializer());
+        module.addDeserializer(Tariff.class, new TariffDeserializer());
         module.addSerializer(UUID.class, new UUIDSerializer());
         module.addSerializer(LocalDate.class, new LocalDateSerializer());
         module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
         module.addSerializer(Instant.class, new InstantSerializer());
         module.addSerializer(Amount.class, new AmountSerializer());
-        module.addSerializer(Quantity.class, new QuantitySerializer());
+        module.addSerializer(Percentage.class, new PercentageSerializer());
         return module;
     }
 
@@ -96,11 +99,11 @@ public class CommonSerializers {
     }
 
     public static class InstantSerializer extends JsonSerializer<Instant> {
+        final JsonSerializer<LocalDateTime> localDateTimeSerializer = new LocalDateTimeSerializer();
+
         @Override
         public void serialize(Instant instant, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            if (instant != null) {
-                gen.writeString(instant.toString());
-            }
+            localDateTimeSerializer.serialize(toLocalDateTimeUTC(instant), gen, serializers);
         }
     }
 
@@ -118,7 +121,8 @@ public class CommonSerializers {
         @Override
         public void serialize(Amount amount, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             if (amount != null) {
-                gen.writeString(amount.asFrancs());
+                serializers.findValueSerializer(Quantity.class)
+                        .serialize(Quantity.of(amount.asFrancs(), Unit.CHF), gen, serializers);
             }
         }
     }
@@ -126,28 +130,50 @@ public class CommonSerializers {
     public static class AmountDeserializer extends JsonDeserializer<Amount> {
         @Override
         public Amount deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
-            return Optional.ofNullable(p.readValueAs(String.class))
-                    .filter(StringUtils::hasText)
-                    .map(Amount::ofFrancs)
+            return Optional.ofNullable(ctx.readValue(p, Quantity.class))
+                    .map(Amount::from)
                     .orElse(null);
         }
     }
 
-    public static class QuantitySerializer extends JsonSerializer<Quantity> {
+    public static class PercentageSerializer extends JsonSerializer<Percentage> {
         @Override
-        public void serialize(Quantity quantity, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            if (quantity != null) {
-                gen.writeString(quantity.asString());
+        public void serialize(Percentage percentage, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            if (percentage != null) {
+                gen.writeString(percentage.getValue().asString());
             }
+        }
+    }
+
+    public static class PercentageDeserializer extends JsonDeserializer<Percentage> {
+        @Override
+        public Percentage deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+            return Optional.ofNullable(p.readValueAs(String.class))
+                    .filter(StringUtils::hasText)
+                    .map(Percentage::of)
+                    .orElse(null);
         }
     }
 
     public static class QuantityDeserializer extends JsonDeserializer<Quantity> {
         @Override
         public Quantity deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
-            return Optional.ofNullable(p.readValueAs(String.class))
-                    .filter(StringUtils::hasText)
-                    .map(s -> new Quantity(s, Unit.SAMPLE))
+            JsonNode node = p.getCodec().readTree(p);
+            return Optional.ofNullable(node.get("value"))
+                    .map(JsonNode::textValue)
+                    .flatMap(value -> Optional.ofNullable(node.get("unit"))
+                            .map(JsonNode::textValue)
+                            .map(Unit::valueOf)
+                            .map(unit -> Quantity.of(value, unit)))
+                    .orElse(null);
+        }
+    }
+
+    public static class TariffDeserializer extends JsonDeserializer<Tariff> {
+        @Override
+        public Tariff deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+            return Optional.ofNullable(ctx.readValue(p, Rate.class))
+                    .map(rate -> Tariff.of(Amount.from(rate.getQuantity()), rate.getBy()))
                     .orElse(null);
         }
     }

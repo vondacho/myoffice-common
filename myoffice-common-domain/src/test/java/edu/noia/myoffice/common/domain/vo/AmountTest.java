@@ -28,4 +28,17 @@ public class AmountTest {
         assertThat(c).isEqualTo(Amount.ofCentimes(5005L));
         assertThat(c).isNotEqualTo(Amount.ofCentimes(5006L));
     }
+
+    @Test
+    public void should_add_as_expected() {
+        // given
+        Amount a = Amount.ofCentimes(50L);
+        Amount b = Amount.ofFrancs(1L);
+        // when
+        Amount c = a.iplus(b);
+        Amount d = a.plus(b);
+        // then
+        assertThat(c.toCentimes()).isEqualTo(150L);
+        assertThat(d.toCentimes()).isEqualTo(150L);
+    }
 }

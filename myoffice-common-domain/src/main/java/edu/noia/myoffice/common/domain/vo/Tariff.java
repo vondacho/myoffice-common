@@ -7,13 +7,13 @@ import lombok.NonNull;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Tariff extends Rate<Quantity, Amount> {
+public class Tariff extends Rate<Amount, Quantity> {
 
-    private Tariff(Amount amount, Unit unit) {
-        super(amount, unit);
+    private Tariff(Amount amount, Quantity quantity) {
+        super(amount, quantity);
     }
 
-    public static Tariff of(@NonNull Amount amount, @NonNull Unit unit) {
-        return new Tariff(amount, unit);
+    public static Tariff of(@NonNull Amount amount, @NonNull Quantity quantity) {
+        return new Tariff(amount, quantity);
     }
 }

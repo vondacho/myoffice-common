@@ -2,4 +2,5 @@ dependencies {
     compile("edu.noia.myoffice:myoffice-common-domain:${version}")
     compile("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
     compile 'org.springframework.boot:spring-boot-starter'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

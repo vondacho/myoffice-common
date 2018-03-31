@@ -1,22 +1,34 @@
 package edu.noia.myoffice.common.domain.vo;
 
-import lombok.EqualsAndHashCode;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
-public class Percentage extends Rate<Quantity, Quantity> {
+import java.math.BigDecimal;
 
-    public static final Percentage ZERO = new Percentage(Quantity.ZERO);
-    public static final Percentage HUNDRED = Percentage.of(100L);
+@Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public class Percentage {
 
-    private Percentage(Quantity value) {
-        super(value, Unit.PERCENTAGE);
-    }
+    private static final BigDecimal HUNDRED_FACTOR = new BigDecimal("0.01");
 
-    public static Percentage of(Long value) {
-        return new Percentage(new Quantity(value, Unit.SAMPLE));
+    @NonNull
+    Quantity value;
+
+    public static Percentage of(long value) {
+        return new Percentage(Quantity.of(value, Unit.SAMPLE).times(HUNDRED_FACTOR));
     }
 
     public static Percentage of(String value) {
-        return new Percentage(new Quantity(value, Unit.SAMPLE));
+        return new Percentage(Quantity.of(value, Unit.SAMPLE).times(HUNDRED_FACTOR));
+    }
+
+    public <Q extends Quantity> Q apply(Q quantity) {
+        return quantity.times(value);
+    }
+
+    public <Q extends Quantity> Q iapply(Q quantity) {
+        return quantity.itimes(value);
     }
 }
