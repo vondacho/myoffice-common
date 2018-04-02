@@ -37,6 +37,10 @@ public class Quantity {
         this.unit = unit;
     }
 
+    public static Quantity from(@NonNull Quantity quantity) {
+        return new Quantity(quantity.value, quantity.unit);
+    }
+
     public static Quantity of(@NonNull Long value, @NonNull Unit unit) {
         return new Quantity(BigDecimal.valueOf(value), unit);
     }

@@ -16,6 +16,10 @@ public class Percentage {
     @NonNull
     Quantity value;
 
+    public static Percentage from(Percentage percentage) {
+        return new Percentage(Quantity.from(percentage.getValue()));
+    }
+
     public static Percentage of(long value) {
         return new Percentage(Quantity.of(value, Unit.SAMPLE).times(HUNDRED_FACTOR));
     }
