@@ -6,7 +6,7 @@ import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
 
 public class PhysicalNamingStrategy extends SpringPhysicalNamingStrategy {
 
-    private String PREFIX_TABLE_DB = "myo_";
+    private String PREFIX_TABLE_DB = "t_";
 
     @Override
     public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
