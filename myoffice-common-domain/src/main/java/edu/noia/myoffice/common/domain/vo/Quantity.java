@@ -24,13 +24,13 @@ public class Quantity {
     @Getter
     protected Unit unit;
 
-    protected BiFunction<Quantity, Quantity, BigDecimal> plusOp = (q1, q2) ->
+    private BiFunction<Quantity, Quantity, BigDecimal> plusOp = (q1, q2) ->
             q1.unit == q2.unit ? q1.value.add(q2.value) :
                     q1.value.add(q2.value.multiply(q2.unit.toDecimal()).divide(q1.unit.toDecimal(), MATH_CONTEXT));
-    protected BiFunction<Quantity, Quantity, BigDecimal> minusOp = (q1, q2) ->
+    private BiFunction<Quantity, Quantity, BigDecimal> minusOp = (q1, q2) ->
             q1.unit == q2.unit ? q1.value.subtract(q2.value) :
                     q1.value.subtract(q2.value.multiply(q2.unit.toDecimal()).divide(q1.unit.toDecimal(), MATH_CONTEXT));
-    protected BiFunction<Quantity, BigDecimal, BigDecimal> timesOp = (q1, f) -> q1.value.multiply(f);
+    private BiFunction<Quantity, BigDecimal, BigDecimal> timesOp = (q1, f) -> q1.value.multiply(f);
 
     public Quantity(@NonNull BigDecimal value, @NonNull Unit unit) {
         this.value = value;

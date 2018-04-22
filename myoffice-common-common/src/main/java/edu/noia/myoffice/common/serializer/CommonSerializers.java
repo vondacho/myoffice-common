@@ -140,7 +140,7 @@ public class CommonSerializers {
         @Override
         public void serialize(Percentage percentage, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             if (percentage != null) {
-                gen.writeString(percentage.getValue().asString());
+                gen.writeString(percentage.getValue().itimes(100L).asString());
             }
         }
     }

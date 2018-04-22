@@ -46,8 +46,9 @@ public interface Entity<E extends Entity<E, I, S>, I extends Identity, S extends
      * Validates the attributes values of the given entity state
      *
      * @param state instance of {@link EntityState}
+     * @return the entity state instance
      */
-    void validate(S state);
+    S validate(S state);
 
     /**
      * Saves the entity state using the given entity repository

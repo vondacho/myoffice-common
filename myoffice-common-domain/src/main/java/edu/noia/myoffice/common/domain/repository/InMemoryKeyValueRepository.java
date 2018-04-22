@@ -62,7 +62,7 @@ public class InMemoryKeyValueRepository<E extends Entity<E, I, S>, I extends Ide
         }
 
         @Override
-        public void validate(S state) {
+        public S validate(S state) {
             throw new UnsupportedOperationException();
         }
     }

@@ -28,6 +28,10 @@ public class Percentage {
         return new Percentage(Quantity.of(value, Unit.SAMPLE).times(HUNDRED_FACTOR));
     }
 
+    public static Percentage of(BigDecimal value) {
+        return new Percentage(new Quantity(value, Unit.SAMPLE).times(HUNDRED_FACTOR));
+    }
+
     public <Q extends Quantity> Q apply(Q quantity) {
         return quantity.times(value);
     }
